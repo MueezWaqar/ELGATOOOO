@@ -3,116 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cute Cat Clicker</title>
+<title>✨ Ultimate Cat Chaos ✨</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: #ffb6d9;
-        overflow-x: hidden;
-        text-align: center;
-    }
+body{
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(-45deg,#ff66c4,#ff9ed6,#ffc2e7,#ffd6f2);
+    background-size:400% 400%;
+    animation:bg 8s ease infinite;
+    user-select:none;
+}
 
-    h1 {
-        color: white;
-        margin-top: 30px;
-        font-size: 3rem;
-        text-shadow: 2px 2px 8px hotpink;
-    }
+@keyframes bg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
 
-    p {
-        color: white;
-        font-size: 1.2rem;
-    }
+h1{
+    text-align:center;
+    color:white;
+    margin:20px;
+    font-size:3em;
+    text-shadow:0 0 15px hotpink;
+}
 
-    .cats {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 30px;
-        padding: 40px;
-    }
+#counter{
+    text-align:center;
+    color:white;
+    font-size:1.4em;
+    margin-bottom:10px;
+}
 
-    .cat {
-        width: 220px;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: transform .25s;
-        box-shadow: 0 10px 25px rgba(0,0,0,.2);
-    }
+.container{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:30px;
+    padding:20px;
+}
 
-    .cat:hover {
-        transform: scale(1.05);
-    }
+.cat{
+    width:220px;
+    border-radius:25px;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 0 25px rgba(0,0,0,.3);
+}
 
-    .spin {
-        animation: spin .8s linear;
-    }
+.cat:hover{
+    transform:scale(1.08);
+}
 
-    @keyframes spin {
-        from { transform: rotate(0deg) scale(1); }
-        to   { transform: rotate(360deg) scale(1.15); }
+.spin{
+    animation:spin .8s linear;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg) scale(1);}
+    to{transform:rotate(720deg) scale(1.2);}
+}
+
+.popup{
+    position:absolute;
+    font-size:48px;
+    font-weight:bold;
+    color:white;
+    text-shadow:0 0 15px hotpink;
+    pointer-events:none;
+    animation:pop 1s forwards;
+}
+
+@keyframes pop{
+    from{
+        opacity:1;
+        transform:translateY(0) scale(.5);
     }
+    to{
+        opacity:0;
+        transform:translateY(-120px) scale(2);
+    }
+}
+
+.heart{
+    position:absolute;
+    font-size:30px;
+    pointer-events:none;
+    animation:float 2s linear forwards;
+}
+
+@keyframes float{
+    from{
+        opacity:1;
+        transform:translateY(0) rotate(0deg);
+    }
+    to{
+        opacity:0;
+        transform:translateY(-250px) rotate(360deg);
+    }
+}
 </style>
 </head>
+
 <body>
 
-<h1>🐱 Cute Cat Zone 🐱</h1>
-<p>Click the cats!</p>
+<h1>🐱 CAT CHAOS 9000 🐱</h1>
+<div id="counter">Cats Petted: 0</div>
 
-<div class="cats">
-    <img class="cat" src="https://cataas.com/cat?1" alt="Cat">
-    <img class="cat" src="https://cataas.com/cat?2" alt="Cat">
-    <img class="cat" src="https://cataas.com/cat?3" alt="Cat">
-    <img class="cat" src="https://cataas.com/cat?4" alt="Cat">
+<div class="container">
+<img class="cat" src="https://cataas.com/cat?1">
+<img class="cat" src="https://cataas.com/cat?2">
+<img class="cat" src="https://cataas.com/cat?3">
+<img class="cat" src="https://cataas.com/cat?4">
 </div>
 
 <script>
-function meow() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-    function tone(freq, duration, delay) {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+let pets = 0;
 
-        osc.type = "triangle";
-        osc.frequency.value = freq;
+function meow(){
 
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+const ctx = new(window.AudioContext||window.webkitAudioContext)();
 
-        const start = ctx.currentTime + delay;
+function tone(f,d,t){
 
-        gain.gain.setValueAtTime(0.0001, start);
-        gain.gain.exponentialRampToValueAtTime(0.25, start + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+const o = ctx.createOscillator();
+const g = ctx.createGain();
 
-        osc.start(start);
-        osc.stop(start + duration);
-    }
+o.type="triangle";
+o.frequency.value=f;
 
-    // Tiny "meow"
-    tone(700, 0.18, 0);
-    tone(500, 0.25, 0.18);
+o.connect(g);
+g.connect(ctx.destination);
+
+let s = ctx.currentTime+t;
+
+g.gain.setValueAtTime(.0001,s);
+g.gain.exponentialRampToValueAtTime(.25,s+.02);
+g.gain.exponentialRampToValueAtTime(.0001,s+d);
+
+o.start(s);
+o.stop(s+d);
 }
 
-document.querySelectorAll(".cat").forEach(cat => {
-    cat.addEventListener("click", () => {
-        cat.classList.remove("spin");
-        void cat.offsetWidth; // restart animation
-        cat.classList.add("spin");
-        meow();
-    });
+tone(900,.12,0);
+tone(650,.18,.12);
+tone(500,.25,.3);
 
-    cat.addEventListener("animationend", () => {
-        cat.classList.remove("spin");
-    });
+}
+
+function popup(x,y){
+
+const p=document.createElement("div");
+p.className="popup";
+p.innerText="MEOW!!";
+p.style.left=x+"px";
+p.style.top=y+"px";
+
+document.body.appendChild(p);
+
+setTimeout(()=>p.remove(),1000);
+
+}
+
+function hearts(x,y){
+
+const emojis=["💖","💕","🐾","✨","😺","❤️"];
+
+for(let i=0;i<15;i++){
+
+const h=document.createElement("div");
+h.className="heart";
+h.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+
+h.style.left=(x+(Math.random()*120-60))+"px";
+h.style.top=(y+(Math.random()*80-40))+"px";
+
+h.style.fontSize=(20+Math.random()*35)+"px";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),2000);
+
+}
+
+}
+
+document.querySelectorAll(".cat").forEach(cat=>{
+
+cat.addEventListener("click",(e)=>{
+
+cat.classList.remove("spin");
+void cat.offsetWidth;
+cat.classList.add("spin");
+
+meow();
+
+pets++;
+document.getElementById("counter").innerText="Cats Petted: "+pets;
+
+popup(e.pageX,e.pageY);
+
+hearts(e.pageX,e.pageY);
+
+// Random movement
+cat.style.position="relative";
+cat.style.left=(Math.random()*200-100)+"px";
+cat.style.top=(Math.random()*120-60)+"px";
+
+// Every 10 pets...
+if(pets%10===0){
+
+document.body.style.filter="hue-rotate("+(Math.random()*360)+"deg)";
+
+const title=document.createElement("div");
+
+title.className="popup";
+title.style.left="50%";
+title.style.top="45%";
+title.style.transform="translateX(-50%)";
+title.style.fontSize="80px";
+title.innerHTML="🎉 CAT OVERLOAD 🎉";
+
+document.body.appendChild(title);
+
+setTimeout(()=>title.remove(),1500);
+
+}
+
 });
+
+cat.addEventListener("animationend",()=>cat.classList.remove("spin"));
+
+});
+
+// Floating random hearts forever
+setInterval(()=>{
+
+const h=document.createElement("div");
+
+h.className="heart";
+h.innerText=["💖","🐱","✨","🐾"][Math.floor(Math.random()*4)];
+
+h.style.left=Math.random()*window.innerWidth+"px";
+h.style.top=window.innerHeight+"px";
+h.style.fontSize=(20+Math.random()*30)+"px";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),2000);
+
+},300);
+
 </script>
 
 </body>
